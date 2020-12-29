@@ -1,8 +1,9 @@
 object Form1: TForm1
-  Left = 919
+  Left = 762
   Top = 203
+  ActiveControl = ComboBox
   BorderStyle = bsDialog
-  Caption = 'ExaTerm'
+  Caption = 'ExaTermV2'
   ClientHeight = 240
   ClientWidth = 320
   Color = clBtnFace
@@ -13,6 +14,8 @@ object Form1: TForm1
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  Visible = True
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -23,27 +26,31 @@ object Form1: TForm1
     Height = 215
     ReadOnly = True
     ScrollBars = ssVertical
-    TabOrder = 1
+    TabOrder = 0
     OnChange = Memo1Change
   end
-  object Edit1: TEdit
-    Left = 40
-    Top = 216
-    Width = 280
-    Height = 21
-    TabOrder = 0
-    OnKeyPress = Edit1KeyPress
-  end
-  object SU: TCheckBox
-    Left = 0
-    Top = 216
-    Width = 41
+  object CheckBox: TCheckBox
+    Left = 2
+    Top = 214
+    Width = 40
     Height = 25
     Caption = 'SU'
-    TabOrder = 2
+    TabOrder = 1
+    OnClick = CheckBoxClick
   end
-  object tmr1: TTimer
-    OnTimer = tmr1Timer
+  object ComboBox: TComboBox
+    Left = 40
+    Top = 216
+    Width = 281
+    Height = 21
+    AutoCloseUp = True
+    DropDownCount = 400
+    ItemHeight = 13
+    TabOrder = 2
+    OnKeyPress = ComboBoxKeyPress
+  end
+  object Tmr1: TTimer
+    OnTimer = Tmr1Timer
     Left = 152
     Top = 120
   end
