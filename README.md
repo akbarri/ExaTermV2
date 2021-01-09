@@ -3,6 +3,8 @@ ExaTerm & ExaTermSU Combine
  
 Watch
 
+https://youtu.be/3WnzdEL7Qhk
+
 https://youtu.be/DNg_fCgSKpA
 
 https://youtu.be/F6Eqtvwq1vs
