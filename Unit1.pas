@@ -39,8 +39,8 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
  FileHistory, SU  : string;
 begin
-   FileHistory:=ExtractFilePath(ParamStr(0))+'ExaTerm.ini';
-   SU:=ExtractFilePath(ParamStr(0))+'.su';
+   FileHistory:=FileSearch('ExaTerm.ini','Z:\tmp\');
+   SU:=FileSearch('.su','Z:\tmp\');
    if FileExists(FileHistory) then
    ComboBox.Items.LoadFromFile(FileHistory);
    if FileExists(SU) then
@@ -52,19 +52,19 @@ begin
   if CheckBox.Checked = False then
     begin
       Form1.Caption := 'ExaTermV2';
-      DeleteFile('.su');
+      DeleteFile('Z:\tmp\.su');
     end
   else
   if CheckBox.Checked = True then
     begin
       Form1.Caption := 'ExaTermV2 - SU';
-      ComboBox.Items.SaveToFile(ExtractFilePath(ParamStr(0))+'.su');
+      ComboBox.Items.SaveToFile('Z:\tmp\.su');
     end
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
-    assignfile(ifile,'if.sh');
+    assignfile(ifile,'Z:\tmp\if.sh');
 end;
 
 procedure TForm1.ComboBoxKeyPress(Sender: TObject; var Key: Char);
@@ -75,7 +75,7 @@ begin
     begin
       sh_path:='export PATH'+ AnsiChar(#10);
       sh_term:='export TERM'+ AnsiChar(#10);
-      sh_cmd:='fakeroot-tcp ' + ComboBox.Text + ' &> of.log' + AnsiChar(#10);
+      sh_cmd:='fakeroot-tcp ' + ComboBox.Text + ' &> /tmp/of.log' + AnsiChar(#10);
       sh_exit:='exit 0'+ AnsiChar(#10);
       //sh_script:= sh_bang + sh_path + sh_term + sh_cmd + sh_exit;
       sh_script:= sh_bang + sh_path + sh_term + sh_cmd;
@@ -83,7 +83,7 @@ begin
     end;
     if CheckBox.Checked = False then
     begin
-      sh_cmd:=ComboBox.Text + ' &> of.log' + AnsiChar(#10);
+      sh_cmd:=ComboBox.Text + ' &> /tmp/of.log' + AnsiChar(#10);
       sh_exit:='exit 0'+ AnsiChar(#10);
       //sh_script := sh_bang + sh_cmd + sh_exit;
       sh_script := sh_bang + sh_cmd;
@@ -96,33 +96,37 @@ begin
        ComboBox.Items.Delete(ComboBox.Items.Count-1);
        ComboBox.Items.Insert(0,ComboBox.Text);
        //ShowMessage(sh_script);
-       ComboBox.Items.SaveToFile(ExtractFilePath(ParamStr(0))+'ExaTerm.ini');
+       ComboBox.Items.SaveToFile('Z:\tmp\ExaTerm.ini');
        Write(ifile, sh_script);
        CloseFile(ifile);
-       ShellExecute(0, nil, PChar('if.sh'), nil, nil, SW_SHOWNORMAL);
-       ShellExecute(Handle, nil, PChar('ExaTerm.exe'), nil, nil, SW_SHOWNORMAL);
-       Application.Terminate;
-       DeleteFile('if.sh');
+       shellexecute(0, nil, 'cmd.exe', '/c start Z:\tmp\if.sh', nil, SW_HIDE);
+       ComboBox.Text:='';
+       //ShellExecute(0, nil, PChar('if.sh'), nil, nil, SW_SHOWNORMAL);
+       //ShellExecute(Handle, nil, PChar('ExaTerm.exe'), nil, nil, SW_SHOWNORMAL);
+       //Application.Terminate;
+       //DeleteFile('if.sh');
     end
   else
   if (Trim(ComboBox.Text)<>'') then
     begin
        //ShowMessage(sh_script);
-       ComboBox.Items.SaveToFile(ExtractFilePath(ParamStr(0))+'ExaTerm.ini');
+       ComboBox.Items.SaveToFile('Z:\tmp\ExaTerm.ini');
        Write(ifile, sh_script);
        CloseFile(ifile);
-       ShellExecute(0, nil, PChar('if.sh'), nil, nil, SW_SHOWNORMAL);
-       ShellExecute(Handle, nil, PChar('ExaTerm.exe'), nil, nil, SW_SHOWNORMAL);
-       Application.Terminate;
-       DeleteFile('if.sh');
+       shellexecute(0, nil, 'cmd.exe', '/c start Z:\tmp\if.sh', nil, SW_HIDE);
+       ComboBox.Text:='';
+       //ShellExecute(0, nil, PChar('if.sh'), nil, nil, SW_SHOWNORMAL);
+       //ShellExecute(Handle, nil, PChar('ExaTerm.exe'), nil, nil, SW_SHOWNORMAL);
+       //Application.Terminate;
+       //DeleteFile('if.sh');
     end;
 end;
 
 procedure TForm1.Tmr1Timer(Sender: TObject);
 begin
-  if FileExists('of.log') then
+  if FileExists('Z:\tmp\of.log') then
   try
-    Memo1.Lines.LoadFromFile('of.log');
+    Memo1.Lines.LoadFromFile('Z:\tmp\of.log');
   except
     on EFOpenError do
     ; //swallow this error
